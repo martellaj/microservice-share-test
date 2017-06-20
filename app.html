@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Microservice Share</title>
+</head>
+
+<body>
+    <script>
+        let sharingUiLoaded = false;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            // Add event listener for post messages.
+            window.addEventListener('message', (sharingEvent) => {
+                let sharingEventData;
+                try {
+                    sharingEventData = JSON.parse(sharingEvent.data);
+                } catch (e) {
+                    return;
+                }
+
+                // Determine what the message is and respond appropriately.
+                const sharingEventName = sharingEventData.name;
+                if (sharingEventName === 'share_resize') {
+                    console.log('ShareV3 >>> Resize requested.');
+                    const iframe = document.getElementById('shareFrame');
+                    iframe.style.height = `${sharingEventData.height}px`;
+                    iframe.style.width = `${sharingEventData.width}px`;
+                } else if (sharingEventName === 'share_ready' && !sharingUiLoaded) {
+                    console.log('ShareV3 >>> Sharing UI rendered successfully.');
+
+                    const loading = document.getElementById('loading');
+                    loading.style.visibility = 'hidden';
+                    const iframe = document.getElementById('shareFrame');
+                    iframe.style.visibility = 'visible';
+                    sharingUiLoaded = true;
+                }
+            }, false);
+
+            // Get form and hide it.
+            const form = document.getElementById('shareForm');
+            form.style.display = 'none';
+
+            // Add ISharingContextInformation object.
+            const sharingContextInformation = {
+                authToken: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjlGWERwYmZNRlQyU3ZRdVhoODQ2WVR3RUlCdyIsImtpZCI6IjlGWERwYmZNRlQyU3ZRdVhoODQ2WVR3RUlCdyJ9.eyJhdWQiOiJodHRwczovL21pY3Jvc29mdC1teS5zaGFyZXBvaW50LmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzcyZjk4OGJmLTg2ZjEtNDFhZi05MWFiLTJkN2NkMDExZGI0Ny8iLCJpYXQiOjE0OTczNzc4OTksIm5iZiI6MTQ5NzM3Nzg5OSwiZXhwIjoxNDk3MzgxNzk5LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOERBQUFBSU1UeUdxUDBkSHkyVnRXVGJsdmQ5SytqUnJBYTg2WGtKK3Q4djQzR2cyRT0iLCJhbXIiOlsicnNhIiwibWZhIl0sImFwcF9kaXNwbGF5bmFtZSI6Ik9uZURyaXZlIFN5bmNFbmdpbmUiLCJhcHBpZCI6ImFiOWI4YzA3LThmMDItNGY3Mi04N2ZhLTgwMTA1ODY3YTc2MyIsImFwcGlkYWNyIjoiMCIsImRldmljZWlkIjoiYmI5YjFjNGMtMTMwZS00NTgzLTg1MWYtMWRmYWFmYWYyMmQ0IiwiZV9leHAiOjI2MjgwMCwiZmFtaWx5X25hbWUiOiJNYXJ0ZWxsYSIsImdpdmVuX25hbWUiOiJKb2UiLCJpcGFkZHIiOiIxNjcuMjIwLjAuMTM4IiwibmFtZSI6IkpvZSBNYXJ0ZWxsYSIsIm9pZCI6ImNjNjEwZmUwLTc3M2MtNDFkYi05MjE5LWQ2ZmQzMzkwYTlkNyIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMTI3NTIxMTg0LTE2MDQwMTI5MjAtMTg4NzkyNzUyNy0xMjMyNTEyMCIsInBsYXRmIjoiMyIsInB1aWQiOiIxMDAzQkZGRDg2NzREMjlDIiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic2lnbmluX3N0YXRlIjpbImR2Y19tbmdkIiwiZHZjX2NtcCIsImR2Y19kbWpkIl0sInN1YiI6ImhoV3ZVLVdiZmptclJBSVVwUVhzY2NURk5rR05wNXJMbGk0cm9lRElabTgiLCJ0aWQiOiI3MmY5ODhiZi04NmYxLTQxYWYtOTFhYi0yZDdjZDAxMWRiNDciLCJ1bmlxdWVfbmFtZSI6ImpvZW1AbWljcm9zb2Z0LmNvbSIsInVwbiI6ImpvZW1AbWljcm9zb2Z0LmNvbSIsInZlciI6IjEuMCJ9.b_7E6HmbY5TKOk6_egVhfyRONqRGZkPuUuSXvlqp5lybM19DTZ9gJBMwcqm01TohK0ZVf8tP-rOcP_59c-5qBdbPJxQYoT-Edo8lfzkx86Dmpu-yNLf5myRy4syMPJ9awjpxC4w_hNNWn42wqvmEddd7B43s7Tkqqir5LnOJBANUlr-HwHOhYTdjqgfXv8uP5_t_cRscNZFdA73lP1ekOndhupWXbTCwmEyjiSPQMfGPCOamoeRt2f6ajELLJ7HyM1OtjxRjh7B3w9ymkmd6WZwlwDfj-UeYFbcyHYfxcS_cqbR5R038QU7sq1EtKyCLUozD7GjjmZUbGh3PxZFJ7w',
+                webAbsoluteUrl: 'https://microsoft-my.sharepoint.com/personal/joem_microsoft_com1',
+                userDisplayName: 'joem@microsoft.com',
+                isODB: true,
+                itemName: 'Test Items',
+                itemCount: 10,
+                clientId: 'word',
+                itemUrl: 'https://microsoft-my.sharepoint.com/personal/joem_microsoft_com1/Documents/Test%20Items'
+            };
+
+            // Request page with POST data.
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'context';
+            input.value = JSON.stringify(sharingContextInformation);
+            form.appendChild(input);
+            form.submit();
+        });
+    </script>
+
+    <span id="loading" style="margin-left: 60px;">Beautiful loading UI goes here...</span>
+
+    <form id="shareForm" target="shareFrame" method="post" action="https://www.onedrive-tst.com/share">
+        <input type="submit" />
+    </form>
+    <iframe id="shareFrame" name="shareFrame" style="height: 250px; width: 320px; visibility: hidden;" src="#" />
+
+</body>
+
+</html>
