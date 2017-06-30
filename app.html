@@ -8,6 +8,13 @@
 
 <body>
     <script>
+        // Fake IsSendViaOutlookEnabled: (externalJavaScript.IsSendViaOutlookEnabled = function() { return 1; }) && false
+        //                               - 1 for Outlook
+        //                               - 2 for non-Outlook
+        //                               - 3 for none
+        // Fake IsSendCopyEnabled: (externalJavaScript.IsSendCopyEnabled = function() { return true }) && false
+        // Fake IsMoreAppsEnabled: (externalJavaScript.IsMoreAppsEnabled = function() { return true; }) && false
+
         let sharingUiLoaded = false;
 
         document.addEventListener('DOMContentLoaded', function (event) {
@@ -44,13 +51,13 @@
 
             // Add ISharingContextInformation object.
             const sharingContextInformation = {
-                authToken: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjlGWERwYmZNRlQyU3ZRdVhoODQ2WVR3RUlCdyIsImtpZCI6IjlGWERwYmZNRlQyU3ZRdVhoODQ2WVR3RUlCdyJ9.eyJhdWQiOiJodHRwczovL21pY3Jvc29mdC1teS5zaGFyZXBvaW50LmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzcyZjk4OGJmLTg2ZjEtNDFhZi05MWFiLTJkN2NkMDExZGI0Ny8iLCJpYXQiOjE0OTczNzc4OTksIm5iZiI6MTQ5NzM3Nzg5OSwiZXhwIjoxNDk3MzgxNzk5LCJhY3IiOiIxIiwiYWlvIjoiQVNRQTIvOERBQUFBSU1UeUdxUDBkSHkyVnRXVGJsdmQ5SytqUnJBYTg2WGtKK3Q4djQzR2cyRT0iLCJhbXIiOlsicnNhIiwibWZhIl0sImFwcF9kaXNwbGF5bmFtZSI6Ik9uZURyaXZlIFN5bmNFbmdpbmUiLCJhcHBpZCI6ImFiOWI4YzA3LThmMDItNGY3Mi04N2ZhLTgwMTA1ODY3YTc2MyIsImFwcGlkYWNyIjoiMCIsImRldmljZWlkIjoiYmI5YjFjNGMtMTMwZS00NTgzLTg1MWYtMWRmYWFmYWYyMmQ0IiwiZV9leHAiOjI2MjgwMCwiZmFtaWx5X25hbWUiOiJNYXJ0ZWxsYSIsImdpdmVuX25hbWUiOiJKb2UiLCJpcGFkZHIiOiIxNjcuMjIwLjAuMTM4IiwibmFtZSI6IkpvZSBNYXJ0ZWxsYSIsIm9pZCI6ImNjNjEwZmUwLTc3M2MtNDFkYi05MjE5LWQ2ZmQzMzkwYTlkNyIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0yMTI3NTIxMTg0LTE2MDQwMTI5MjAtMTg4NzkyNzUyNy0xMjMyNTEyMCIsInBsYXRmIjoiMyIsInB1aWQiOiIxMDAzQkZGRDg2NzREMjlDIiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic2lnbmluX3N0YXRlIjpbImR2Y19tbmdkIiwiZHZjX2NtcCIsImR2Y19kbWpkIl0sInN1YiI6ImhoV3ZVLVdiZmptclJBSVVwUVhzY2NURk5rR05wNXJMbGk0cm9lRElabTgiLCJ0aWQiOiI3MmY5ODhiZi04NmYxLTQxYWYtOTFhYi0yZDdjZDAxMWRiNDciLCJ1bmlxdWVfbmFtZSI6ImpvZW1AbWljcm9zb2Z0LmNvbSIsInVwbiI6ImpvZW1AbWljcm9zb2Z0LmNvbSIsInZlciI6IjEuMCJ9.b_7E6HmbY5TKOk6_egVhfyRONqRGZkPuUuSXvlqp5lybM19DTZ9gJBMwcqm01TohK0ZVf8tP-rOcP_59c-5qBdbPJxQYoT-Edo8lfzkx86Dmpu-yNLf5myRy4syMPJ9awjpxC4w_hNNWn42wqvmEddd7B43s7Tkqqir5LnOJBANUlr-HwHOhYTdjqgfXv8uP5_t_cRscNZFdA73lP1ekOndhupWXbTCwmEyjiSPQMfGPCOamoeRt2f6ajELLJ7HyM1OtjxRjh7B3w9ymkmd6WZwlwDfj-UeYFbcyHYfxcS_cqbR5R038QU7sq1EtKyCLUozD7GjjmZUbGh3PxZFJ7w',
+                authToken: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjlGWERwYmZNRlQyU3ZRdVhoODQ2WVR3RUlCdyIsImtpZCI6IjlGWERwYmZNRlQyU3ZRdVhoODQ2WVR3RUlCdyJ9.eyJhdWQiOiJodHRwczovL21pY3Jvc29mdC1teS5zaGFyZXBvaW50LmNvbSIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzcyZjk4OGJmLTg2ZjEtNDFhZi05MWFiLTJkN2NkMDExZGI0Ny8iLCJpYXQiOjE0OTg3Njk4MDksIm5iZiI6MTQ5ODc2OTgwOSwiZXhwIjoxNDk4NzczNzA5LCJhY3IiOiIxIiwiYWlvIjoiWTJaZ1lMQnhlV3UyeTNhdGQyK3haZVBMSlVZRjl4ZWJaTmFFL2VKUFo4elphTmo0ZHhrQSIsImFtciI6WyJyc2EiLCJtZmEiXSwiYXBwX2Rpc3BsYXluYW1lIjoiT25lRHJpdmUgU3luY0VuZ2luZSIsImFwcGlkIjoiYWI5YjhjMDctOGYwMi00ZjcyLTg3ZmEtODAxMDU4NjdhNzYzIiwiYXBwaWRhY3IiOiIwIiwiZGV2aWNlaWQiOiJiYjliMWM0Yy0xMzBlLTQ1ODMtODUxZi0xZGZhYWZhZjIyZDQiLCJlX2V4cCI6MjYyODAwLCJmYW1pbHlfbmFtZSI6Ik1hcnRlbGxhIiwiZ2l2ZW5fbmFtZSI6IkpvZSIsImlwYWRkciI6IjE2Ny4yMjAuMC4xMzgiLCJuYW1lIjoiSm9lIE1hcnRlbGxhIiwib2lkIjoiY2M2MTBmZTAtNzczYy00MWRiLTkyMTktZDZmZDMzOTBhOWQ3Iiwib25wcmVtX3NpZCI6IlMtMS01LTIxLTIxMjc1MjExODQtMTYwNDAxMjkyMC0xODg3OTI3NTI3LTEyMzI1MTIwIiwicGxhdGYiOiIzIiwicHVpZCI6IjEwMDNCRkZEODY3NEQyOUMiLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzaWduaW5fc3RhdGUiOlsiZHZjX21uZ2QiLCJkdmNfY21wIiwiZHZjX2RtamQiXSwic3ViIjoiaGhXdlUtV2Jmam1yUkFJVXBRWHNjY1RGTmtHTnA1ckxsaTRyb2VESVptOCIsInRpZCI6IjcyZjk4OGJmLTg2ZjEtNDFhZi05MWFiLTJkN2NkMDExZGI0NyIsInVuaXF1ZV9uYW1lIjoiam9lbUBtaWNyb3NvZnQuY29tIiwidXBuIjoiam9lbUBtaWNyb3NvZnQuY29tIiwidmVyIjoiMS4wIn0.HU7DhNTjAVPnnnWIukeLl-zsOWNEm6sjlxDLoGUQ6fSAes4ka7i6lpdA4BQBuphtPZaGrlbrGKwgALIkn9fb6SpjH3wl4ukObH0dQPuvT7EK8IROv96z2BpdAckg0SBGZfSFeyO8zxV_BNY3wELpzcD3bI_tU2yPRQP3rUmDDXgjLbD4R-CtE2da8YH5evc0WLoFEXHWD5kIIjapDP9FFEBJTlXi-lfJTCgVnNcHzJ7YOf_I2d4Zvgqk5J1v06lEUP802nGYglLUaXErUEoCoRqT0tlqy0sy-qLzg09kk53GzqNtj-20eZlZBX0lDonS1GDpTvqZ1TsCN30Hvvha8g',
                 webAbsoluteUrl: 'https://microsoft-my.sharepoint.com/personal/joem_microsoft_com1',
                 userDisplayName: 'joem@microsoft.com',
                 isODB: true,
                 itemName: 'Test Items',
                 itemCount: 10,
-                clientId: 'word',
+                clientId: 'ngsc',
                 itemUrl: 'https://microsoft-my.sharepoint.com/personal/joem_microsoft_com1/Documents/Test%20Items'
             };
 
@@ -66,7 +73,7 @@
 
     <span id="loading" style="margin-left: 60px;">Beautiful loading UI goes here...</span>
 
-    <form id="shareForm" target="shareFrame" method="post" action="https://www.onedrive-tst.com/share">
+    <form id="shareForm" target="shareFrame" method="post" action="https://www.onedrive-tst.com/share?devhost=https%3A%2F%2Fresourceseng.blob.core.windows.net%2Ffiles%2Fdev-joem-majestic-mangoc--users-joem-source-next2-app-min-joem%2Fshare-targets%2F">
         <input type="submit" />
     </form>
     <iframe id="shareFrame" name="shareFrame" style="height: 250px; width: 320px; visibility: hidden;" src="#" />
