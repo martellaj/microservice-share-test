@@ -54,13 +54,12 @@
             // Add ISharingContextInformation object.
             const sharingContextInformation = {
                 authToken: '',
-                webAbsoluteUrl: 'https://microsoft-my.sharepoint.com/personal/xxx',
+                webAbsoluteUrl: 'https://microsoft-my.sharepoint-df.com/personal/joem_microsoft_com1',
                 userDisplayName: 'joem@microsoft.com',
                 isODB: true,
-                itemName: 'Test Items',
-                itemCount: 10,
+                itemName: 'OneDrive Bliss.jpg',
                 clientId: 'ngsc',
-                itemUrl: 'https://microsoft-my.sharepoint.com/personal/xxx'
+                itemUrl: 'https://microsoft-my.sharepoint-df.com/personal/joem_microsoft_com1/Documents/Test Items/OneDrive Bliss.jpg'
             };
 
             // Request page with POST data.
@@ -75,7 +74,7 @@
 
     <span id="loading" style="margin-left: 60px;">Beautiful loading UI goes here...</span>
 
-    <form id="shareForm" target="shareFrame" method="post" action="https://www.onedrive-tst.com/share">
+    <form id="shareForm" target="shareFrame" method="post" action="https://www.onedrive-tst.com/share?devhost=https%3A%2F%2Fresourceseng.blob.core.windows.net%2Ffiles%2Fdev-joem-joem-devc--users-joem-code-next-app-min-joem%2F%40-mention%2F">
         <input type="submit"></input>
     </form>
     <iframe id="shareFrame" name="shareFrame" style="height: 250px; width: 320px; visibility: hidden;" src="#" />
