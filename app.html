@@ -38,12 +38,17 @@
                     iframe.style.width = sharingEventData.width + 'px';
                 } else if (sharingEventName === 'share_ready' && !sharingUiLoaded) {
                     console.log('ShareV3 >>> Sharing UI rendered successfully.');
-
                     const loading = document.getElementById('loading');
                     loading.style.visibility = 'hidden';
                     const iframe = document.getElementById('shareFrame');
                     iframe.style.visibility = 'visible';
                     sharingUiLoaded = true;
+                } else if (sharingEventName === 'share_grantAccessCompleted') {
+                    console.log(`ShareV3 >>> "Grant access" operation completed and it was${sharingEventData.successful ? '': `n't`} successful.`);
+                } else if (sharingEventName === 'share_dismiss') {
+                    console.log('ShareV3 >>> Sharing UI dismissed.');
+                    const iframe = document.getElementById('shareFrame');
+                    iframe.style.visibility = 'hidden';
                 }
             }, false);
 
@@ -59,7 +64,10 @@
                 isODB: true,
                 itemName: 'OneDrive Bliss.jpg',
                 clientId: 'ngsc',
-                itemUrl: 'https://microsoft-my.sharepoint-df.com/personal/joem_microsoft_com1/Documents/Test Items/OneDrive Bliss.jpg'
+                itemUrl: 'https://microsoft-my.sharepoint-df.com/personal/joem_microsoft_com1/Documents/Test Items/OneDrive Bliss.jpg',
+                mode: 3,
+                defaultRecipients: ['joem@microsoft.com']
+                // defaultRecipients: ['joem@microsoft.com', 'martellaj@live.com']
             };
 
             // Request page with POST data.
