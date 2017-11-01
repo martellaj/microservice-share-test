@@ -32,7 +32,6 @@
                 // Determine what the message is and respond appropriately.
                 const sharingEventName = sharingEventData.name;
                 if (sharingEventName === 'share_resize') {
-                    console.log('ShareV3 >>> Resize requested.');
                     const iframe = document.getElementById('shareFrame');
                     iframe.style.height = sharingEventData.height + 'px';
                     iframe.style.width = sharingEventData.width + 'px';
@@ -44,7 +43,8 @@
                     iframe.style.visibility = 'visible';
                     sharingUiLoaded = true;
                 } else if (sharingEventName === 'share_grantAccessCompleted') {
-                    console.log(`ShareV3 >>> "Grant access" operation completed and it was${sharingEventData.successful ? '': `n't`} successful.`);
+                    const successString = sharingEventData.successful ? '' : 'not ';
+                    console.log('ShareV3 >>> "Grant access" operation completed and it was ' + successString + 'successful.');
                 } else if (sharingEventName === 'share_dismiss') {
                     console.log('ShareV3 >>> Sharing UI dismissed.');
                     const iframe = document.getElementById('shareFrame');
@@ -56,18 +56,22 @@
             const form = document.getElementById('shareForm');
             form.style.display = 'none';
 
+            const authToken = '';
+
             // Add ISharingContextInformation object.
             const sharingContextInformation = {
-                authToken: '',
+                authToken: authToken,
                 webAbsoluteUrl: 'https://microsoft-my.sharepoint-df.com/personal/joem_microsoft_com1',
                 userDisplayName: 'joem@microsoft.com',
                 isODB: true,
                 itemName: 'OneDrive Bliss.jpg',
-                clientId: 'ngsc',
+                clientId: 'powerpoint',
                 itemUrl: 'https://microsoft-my.sharepoint-df.com/personal/joem_microsoft_com1/Documents/Test Items/OneDrive Bliss.jpg',
-                mode: 3,
-                defaultRecipients: ['joem@microsoft.com']
-                // defaultRecipients: ['joem@microsoft.com', 'martellaj@live.com']
+                // mode: 3,
+                // accessChecked: false,
+                // defaultRecipients: ['ebang@microsoft.com', 'brwatt@microsoft.com', 'raflop@microsoft.com']
+                // defaultRecipients: ['ebang@microsoft.com', 'brwatt@microsoft.com', 'external_user@outlook.com']
+                // defaultRecipients: ['ebang@microsoft.com', 'brwatt@microsoft.com', 'raflop@microsoft.com', 'ebang@microsoft.com', 'brwatt@microsoft.com', 'raflop@microsoft.com', 'ebang@microsoft.com', 'brwatt@microsoft.com', 'raflop@microsoft.com']
             };
 
             // Request page with POST data.
@@ -82,7 +86,7 @@
 
     <span id="loading" style="margin-left: 60px;">Beautiful loading UI goes here...</span>
 
-    <form id="shareForm" target="shareFrame" method="post" action="https://www.onedrive-tst.com/share?devhost=https%3A%2F%2Fresourceseng.blob.core.windows.net%2Ffiles%2Fdev-joem-joem-devc--users-joem-code-next-app-min-joem%2F%40-mention%2F">
+    <form id="shareForm" target="shareFrame" method="post" action="https://www.onedrive-tst.com/share?devhost=https%3A%2F%2Fresourceseng.blob.core.windows.net%2Ffiles%2Fdev-joem-joem-devc--users-joem-code-next2-app-min-master%2F">
         <input type="submit"></input>
     </form>
     <iframe id="shareFrame" name="shareFrame" style="height: 250px; width: 320px; visibility: hidden;" src="#" />
